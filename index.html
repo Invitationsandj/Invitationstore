@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>Invitation Studio</title>
+<title>Imbitasyon Studio</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@400;500;700;800&family=Pinyon+Script&family=Caveat:wght@600&family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Fredoka:wght@500;600&display=swap">
 <style>
 /* Layout: hero with three live sample invitations, then one long order form (left) with a sticky live preview (right). */
@@ -66,6 +66,9 @@ button{font:inherit}
 .hero h1{font-size:clamp(2.1rem,5.4vw,3.7rem)}
 .hero h1 em{color:var(--accent);font-style:italic}
 .hero p.lead{margin-top:18px;max-width:46ch;color:var(--muted);font-size:1.075rem}
+.range{margin-top:18px;font-weight:700}
+.range span{color:var(--accent);font-family:var(--display);font-size:1.35rem;font-weight:700;white-space:nowrap}
+.range small{display:block;color:var(--muted);font-weight:400;font-size:.88rem;margin-top:2px}
 .cta{display:inline-block;margin-top:26px;background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:700;padding:14px 26px;border-radius:10px}
 .hero-art{display:flex;align-items:center;justify-content:center;padding-block:10px}
 .hero-art .invw{width:min(31%,200px);flex:none;filter:drop-shadow(0 14px 22px rgba(30,20,50,.28))}
@@ -211,7 +214,7 @@ footer{border-top:1px solid var(--line);padding-block:24px 36px;color:var(--mute
 
 <div class="wrap">
   <header class="top">
-    <div class="brand" id="brandName">Invitation Studio</div>
+    <div class="brand" id="brandName">Imbitasyon Studio</div>
     <a class="pill" href="#order">Place an order</a>
   </header>
 
@@ -219,6 +222,7 @@ footer{border-top:1px solid var(--line);padding-block:24px 36px;color:var(--mute
     <div>
       <h1>Invitations made for your <em>special</em> day.</h1>
       <p class="lead">Pick your occasion and design, fill in your details, and see your invitation take shape right away. We create the final version for you and send it as a digital file.</p>
+      <p class="range">Starts at <span>₱699 to ₱1,499</span><small>The final amount depends on your design and add-ons. We confirm it in chat before we start.</small></p>
       <a class="cta" href="#order">Start your order</a>
     </div>
     <div class="hero-art" aria-hidden="true">
@@ -262,7 +266,7 @@ footer{border-top:1px solid var(--line);padding-block:24px 36px;color:var(--mute
 
       <section class="step">
         <h2><span>Step 3</span> Format</h2>
-        <p class="hint">Choose the kind of digital invitation you want.</p>
+        <p class="hint">Choose the kind of digital invitation you want. Payment range: <b>₱699 to ₱1,499</b>, depending on the design and add-ons. Rush orders have an extra payment.</p>
         <div class="opts" id="fmtGrid" role="radiogroup" aria-label="Format">
           <label class="opt"><input type="radio" name="fmt" value="digital" checked><span><b>Digital invitation</b><small>A JPG or PNG you can share on Messenger, Viber, or in a group chat.</small></span></label>
           <label class="opt"><input type="radio" name="fmt" value="rsvp"><span><b>Digital + RSVP page</b><small>Comes with its own link where guests can reply if they are coming.</small></span></label>
@@ -318,19 +322,19 @@ footer{border-top:1px solid var(--line);padding-block:24px 36px;color:var(--mute
   </div>
 
   <footer>
-    <span id="footName">Invitation Studio</span>. The preview is only an example. The final design is made based on what we agree on.
+    <span id="footName">Imbitasyon Studio</span>. The preview is only an example. The final design is made based on what we agree on.
   </footer>
 </div>
 
 <script>
 /* Edit these values for your own business. */
 var CONFIG = {
-  shop: "Invitation Studio",
+  shop: "Imbitasyon Studio",
   messengerUrl: "",   /* e.g. https://m.me/yourpagename */
   phone: "",          /* e.g. 0917 123 4567 */
   draftDays: "3 to 7 days",
   revisions: 2,
-  sheetUrl: "https://script.google.com/macros/s/AKfycbxFG1PdD596-p4Is37aoFxgrGVtLkIATQZ_ZAVnW2GRaRixs-mtsuECn5-lWdB89y-7/exec"        /* paste your Google Apps Script web app URL (ends in /exec) here */
+  sheetUrl: "https://script.google.com/macros/s/AKfycbwqQ18RUN7CRtqKBv3mx7l57ID3nXIA2TLKoitEG-fweFBSmXFXhRybBZj7Qp34oCH-/exec"        /* paste your Google Apps Script web app URL (ends in /exec) here */
 };
 
 var OCC = [
@@ -614,7 +618,7 @@ function showContacts(){
   if(CONFIG.phone){
     var sp = document.createElement("span"); sp.textContent = "Our number: " + CONFIG.phone; box.appendChild(sp);
   }
-  if(!CONFIG.messengerUrl && !CONFIG.phone){
+  if(!CONFIG.messengerUrl && !CONFIG.phone && !CONFIG.sheetUrl){
     var p = document.createElement("span");
     p.textContent = "Send the summary in chat to the person who gave you this link.";
     box.appendChild(p);
