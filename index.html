@@ -206,7 +206,17 @@ footer{border-top:1px solid var(--line);padding-block:24px 36px;color:var(--mute
   .hero-art .invw{width:34%}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-</style>
+
+.upl{margin-top:4px}
+.upl input[type=file]{display:none}
+.upl .pick{display:inline-block;border:1px dashed var(--accent);color:var(--accent);font-weight:700;padding:11px 18px;border-radius:10px;cursor:pointer;background:var(--accent-soft)}
+.upl-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.upl-item{position:relative;width:96px;height:96px;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.upl-item img{width:100%;height:100%;object-fit:cover;display:block}
+.upl-item button{position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:50%;border:0;background:rgba(0,0,0,.65);color:#fff;font-size:15px;line-height:24px;padding:0;cursor:pointer}
+.upl-msg{font-size:.88rem;color:var(--muted);margin-top:8px}
+.upl-msg.bad{color:var(--danger)}
+</style></style>
 </head>
 <body>
 
@@ -255,10 +265,17 @@ footer{border-top:1px solid var(--line);padding-block:24px 36px;color:var(--mute
         <div class="styles" id="styleGrid" role="radiogroup" aria-label="Design"></div>
         <div class="sub-opts" id="ownBox" hidden>
           <div class="grid">
+            <div class="field full upl">
+              <label>Upload a picture of your design (optional)</label>
+              <label class="pick" for="odfile">Choose picture</label>
+              <input type="file" id="odfile" accept="image/*" multiple>
+              <div class="upl-list" id="odlist"></div>
+              <div class="upl-msg" id="odmsg">Up to 3 pictures. JPG, PNG, or a screenshot is fine.</div>
+            </div>
             <div class="field full"><label for="odlink">Link to your design (optional)</label><input type="text" id="odlink" maxlength="200" placeholder="Google Drive, Canva, Pinterest, or Facebook link"></div>
             <div class="field full"><label for="odnotes">Tell us what to do with it (optional)</label><textarea id="odnotes" maxlength="400" placeholder="e.g. Use my design as it is and just add the event details."></textarea></div>
           </div>
-          <p style="margin-top:12px;color:var(--muted);font-size:.92rem">You can also send the design file or a screenshot in chat together with your order summary.</p>
+          <p style="margin-top:12px;color:var(--muted);font-size:.92rem">You can upload a picture above, paste a link, or send the file in chat together with your order summary.</p>
         </div>
       </section>
 
@@ -334,7 +351,7 @@ var CONFIG = {
   phone: "",          /* e.g. 0917 123 4567 */
   draftDays: "3 to 7 days",
   revisions: 2,
-  sheetUrl: "https://script.google.com/macros/s/AKfycbwqQ18RUN7CRtqKBv3mx7l57ID3nXIA2TLKoitEG-fweFBSmXFXhRybBZj7Qp34oCH-/exec"        /* paste your Google Apps Script web app URL (ends in /exec) here */
+  sheetUrl: "https://script.google.com/macros/s/AKfycbxFG1PdD596-p4Is37aoFxgrGVtLkIATQZ_ZAVnW2GRaRixs-mtsuECn5-lWdB89y-7/exec"        /* paste your Google Apps Script web app URL (ends in /exec) here */
 };
 
 var OCC = [
@@ -556,7 +573,8 @@ function buildSummary(code){
   if(radio("sty") === "custom"){
     L.push("Design: Customer's own design");
     if($("odlink").value.trim()) L.push("Design link: " + $("odlink").value.trim());
-    else L.push("Design file: customer will send it in chat");
+    else if(!OD_IMGS.length) L.push("Design file: customer will send it in chat");
+    if(OD_IMGS.length) L.push("Design pictures: " + OD_IMGS.length + " uploaded with this order (check the Drive folder)");
     if($("odnotes").value.trim()) L.push("About the design: " + $("odnotes").value.trim());
   } else {
     L.push("Design: " + s.name);
@@ -596,6 +614,7 @@ function collectOrder(code){
     design: own ? "Customer's own design" : sty(radio("sty")).name,
     designLink: own ? $("odlink").value.trim() : "",
     designNotes: own ? $("odnotes").value.trim() : "",
+    designImages: own ? OD_IMGS.map(function(m){ return { name: m.name, data: m.data }; }) : [],
     format: FMT_LABEL[radio("fmt")],
     addons: c.adds.join(", "),
     name: $("fname").value.trim(), extraLine: $("fsub").value.trim(),
@@ -663,6 +682,62 @@ $("copy").addEventListener("click", function(){
     navigator.clipboard.writeText(ta.value).then(function(){ msg.textContent = "Copied!"; }, fallback);
   } catch(e){ fallback(); }
 });
+
+/* ----- own design pictures ----- */
+var OD_IMGS = [];
+function odRender(){
+  var box = $("odlist"); box.innerHTML = "";
+  OD_IMGS.forEach(function(im, i){
+    var d = document.createElement("div"); d.className = "upl-item";
+    var img = document.createElement("img"); img.src = im.data; img.alt = "Design " + (i+1);
+    var x = document.createElement("button"); x.type = "button"; x.textContent = "\u00d7"; x.setAttribute("aria-label","Remove picture");
+    x.addEventListener("click", function(){ OD_IMGS.splice(i,1); odRender(); });
+    d.appendChild(img); d.appendChild(x); box.appendChild(d);
+  });
+}
+function odShrink(file){
+  return new Promise(function(res, rej){
+    var fr = new FileReader();
+    fr.onerror = function(){ rej(); };
+    fr.onload = function(){
+      var im = new Image();
+      im.onerror = function(){ rej(); };
+      im.onload = function(){
+        var M = 1400, w = im.width, h = im.height, k = Math.min(1, M / Math.max(w, h));
+        var c = document.createElement("canvas"); c.width = Math.round(w*k); c.height = Math.round(h*k);
+        var g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0,0,c.width,c.height); g.drawImage(im,0,0,c.width,c.height);
+        res({ name: file.name.replace(/\.[^.]+$/,"") + ".jpg", data: c.toDataURL("image/jpeg", 0.82) });
+      };
+      im.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
+$("odfile").addEventListener("change", function(){
+  var msg = $("odmsg"), files = Array.prototype.slice.call(this.files || []), inp = this;
+  msg.className = "upl-msg";
+  var room = 3 - OD_IMGS.length;
+  if(files.length > room){ msg.className = "upl-msg bad"; msg.textContent = "Up to 3 pictures only."; files = files.slice(0, Math.max(room,0)); }
+  Promise.all(files.map(odShrink)).then(function(arr){
+    arr.forEach(function(a){ OD_IMGS.push(a); });
+    odRender();
+    if(msg.className.indexOf("bad") < 0) msg.textContent = OD_IMGS.length ? OD_IMGS.length + " picture(s) ready. They will be sent with your order." : "Up to 3 pictures. JPG, PNG, or a screenshot is fine.";
+  }).catch(function(){ msg.className = "upl-msg bad"; msg.textContent = "We could not read that picture. Try another one."; });
+  inp.value = "";
+});
+
+/* ----- visit counter (logged to your Google Sheet) ----- */
+(function(){
+  if(!CONFIG.sheetUrl) return;
+  try {
+    var vid = localStorage.getItem("imb_vid"), isNew = false;
+    if(!vid){ vid = "V" + Date.now().toString(36) + Math.random().toString(36).slice(2,7); localStorage.setItem("imb_vid", vid); isNew = true; }
+    var ua = navigator.userAgent, dev = /Mobi|Android|iPhone/i.test(ua) ? "Phone" : "Computer";
+    fetch(CONFIG.sheetUrl, { method:"POST", mode:"no-cors", headers:{ "Content-Type":"text/plain;charset=utf-8" },
+      body: JSON.stringify({ type:"visit", visitorId:vid, newVisitor:isNew, device:dev, screen:screen.width+"x"+screen.height,
+        lang:navigator.language||"", referrer:document.referrer||"direct", page:location.href }) });
+  } catch(e){}
+})();
 
 /* ----- wire up ----- */
 buildOccasions(); buildStyles(); buildAddons();
