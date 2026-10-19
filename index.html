@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Imbitasyon Studio</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@400;500;700;800&family=Pinyon+Script&family=Caveat:wght@600&family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Fredoka:wght@500;600&display=swap">
 <style>
@@ -70,6 +72,9 @@ button{font:inherit}
 .range span{color:var(--accent);font-family:var(--display);font-size:1.35rem;font-weight:700;white-space:nowrap}
 .range small{display:block;color:var(--muted);font-weight:400;font-size:.88rem;margin-top:2px}
 .cta{display:inline-block;margin-top:26px;background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:700;padding:14px 26px;border-radius:10px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.cta-row .cta{margin-top:0}
+.cta.alt{background:transparent;color:var(--accent);border:2px solid var(--accent);padding:12px 24px}
 .hero-art{display:flex;align-items:center;justify-content:center;padding-block:10px}
 .hero-art .invw{width:min(31%,200px);flex:none;filter:drop-shadow(0 14px 22px rgba(30,20,50,.28))}
 .hero-art .invw:nth-child(1){transform:rotate(-6deg) translateY(10px)}
@@ -233,7 +238,10 @@ footer{border-top:1px solid var(--line);padding-block:24px 36px;color:var(--mute
       <h1>Invitations made for your <em>special</em> day.</h1>
       <p class="lead">Pick your occasion and design, fill in your details, and see your invitation take shape right away. We create the final version for you and send it as a digital file.</p>
       <p class="range">Starts at <span>₱699 to ₱1,499</span><small>The final amount depends on your design and add-ons. We confirm it in chat before we start.</small></p>
-      <a class="cta" href="#order">Start your order</a>
+      <div class="cta-row">
+        <a class="cta" href="#order">Start your order</a>
+        <a class="cta alt" id="dmHero" href="https://m.me/61593107745150" target="_blank" rel="noopener">Message us directly</a>
+      </div>
     </div>
     <div class="hero-art" aria-hidden="true">
       <div class="invw" id="h1"></div><div class="invw" id="h2"></div><div class="invw" id="h3"></div>
@@ -252,6 +260,7 @@ footer{border-top:1px solid var(--line);padding-block:24px 36px;color:var(--mute
 
   <div class="layout" id="order">
     <form id="form" novalidate autocomplete="off">
+      <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"><label>Leave this empty<input type="text" id="hp" name="website" tabindex="-1" autocomplete="off"></label></div>
 
       <section class="step">
         <h2><span>Step 1</span> What is the occasion?</h2>
@@ -311,7 +320,7 @@ footer{border-top:1px solid var(--line);padding-block:24px 36px;color:var(--mute
 
       <section class="step">
         <h2><span>Step 5</span> How can we reach you?</h2>
-        <p class="hint">So we can send your draft and answer your questions.</p>
+        <p class="hint">So we can send your draft and answer your questions. Prefer to chat first? <a href="https://m.me/61593107745150" target="_blank" rel="noopener">Message us directly on Messenger</a>.</p>
         <div class="grid">
           <div class="field"><label for="cname">Your name</label><input type="text" id="cname" maxlength="70"></div>
           <div class="field"><label for="ccontact">Messenger, Viber, or phone number</label><input type="text" id="ccontact" maxlength="80"></div>
@@ -339,7 +348,7 @@ footer{border-top:1px solid var(--line);padding-block:24px 36px;color:var(--mute
   </div>
 
   <footer>
-    <span id="footName">Imbitasyon Studio</span>. The preview is only an example. The final design is made based on what we agree on.
+    <span id="footName">Imbitasyon Studio</span> · <a href="https://m.me/61593107745150" target="_blank" rel="noopener">Message us</a> · <a href="https://www.facebook.com/profile.php?id=61593107745150" target="_blank" rel="noopener">Facebook page</a>. The preview is only an example. The final design is made based on what we agree on.
   </footer>
 </div>
 
@@ -347,7 +356,8 @@ footer{border-top:1px solid var(--line);padding-block:24px 36px;color:var(--mute
 /* Edit these values for your own business. */
 var CONFIG = {
   shop: "Imbitasyon Studio",
-  messengerUrl: "",   /* e.g. https://m.me/yourpagename */
+  messengerUrl: "https://m.me/61593107745150",
+  facebookUrl: "https://www.facebook.com/profile.php?id=61593107745150",
   phone: "",          /* e.g. 0917 123 4567 */
   draftDays: "3 to 7 days",
   revisions: 2,
@@ -657,6 +667,9 @@ $("form").addEventListener("submit", function(e){
     $(need[0][0]).focus();
     return;
   }
+  /* bot checks: hidden field filled, or form sent unrealistically fast */
+  var spam = !!$("hp").value || (Date.now() - PAGE_T0 < 4000);
+  if(!spam && !rateOk()){ err.textContent = "Please wait a minute before sending another order."; return; }
   var code = orderCode();
   $("code").textContent = code;
   $("summary").value = buildSummary(code);
@@ -665,6 +678,7 @@ $("form").addEventListener("submit", function(e){
   $("done").hidden = false;
   $("done").scrollIntoView({ behavior: "smooth", block: "center" });
   var manual = "Copy the summary below and send it to us in chat so we can get started.";
+  if(spam){ $("doneMsg").textContent = manual; return; }
   if(!CONFIG.sheetUrl){ $("doneMsg").textContent = "Your order has not been sent yet. " + manual; return; }
   var btn = document.querySelector(".submit");
   btn.disabled = true;
@@ -682,6 +696,19 @@ $("copy").addEventListener("click", function(){
     navigator.clipboard.writeText(ta.value).then(function(){ msg.textContent = "Copied!"; }, fallback);
   } catch(e){ fallback(); }
 });
+
+/* ----- spam protection helpers ----- */
+var PAGE_T0 = Date.now();
+function rateOk(){
+  try {
+    var now = Date.now();
+    var a = JSON.parse(localStorage.getItem("imb_sub") || "[]").filter(function(t){ return now - t < 3600000; });
+    if(a.length && now - a[a.length-1] < 60000) return false;
+    if(a.length >= 5) return false;
+    a.push(now); localStorage.setItem("imb_sub", JSON.stringify(a));
+    return true;
+  } catch(e){ return true; }
+}
 
 /* ----- own design pictures ----- */
 var OD_IMGS = [];
