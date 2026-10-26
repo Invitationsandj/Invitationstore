@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Invitation Studio</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@400;500;700;800&family=Pinyon+Script&family=Caveat:wght@600&family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Fredoka:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@400;500;700;800&family=Pinyon+Script&family=Caveat:wght@600&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Fredoka:wght@500;600&display=swap">
 <style>
 /* Layout: hero with three live sample invitations, then one long order form (left) with a sticky live preview (right). */
 :root{
@@ -212,6 +212,33 @@ footer{border-top:1px solid var(--line);padding-block:24px 36px;color:var(--mute
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
+/* sample gallery modal */
+button.cta{border:0;font:inherit;font-weight:700;cursor:pointer}
+button.cta.alt{border:2px solid var(--accent)}
+.gal{position:fixed;inset:0;z-index:50;background:rgba(20,14,30,.6);display:flex;align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto}
+.gal-box{background:var(--surface);color:var(--ink);border-radius:16px;width:100%;max-width:980px;margin-block:auto;padding:22px;position:relative}
+.gal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+.gal-head h2{font-size:1.6rem}
+.gal-head p{color:var(--muted);font-size:.92rem;margin-top:4px}
+.gal-x{flex:none;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:22px;line-height:1;cursor:pointer}
+.gal-occ{margin-bottom:18px}
+.gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px}
+.gal-card{display:flex;flex-direction:column;gap:10px;height:100%}
+.gal-card .invw{filter:drop-shadow(0 8px 14px rgba(30,20,50,.22))}
+.gal-card b{font-size:.95rem;line-height:1.3;margin-bottom:auto}
+.gal-card small{display:block}
+.gal-card .btn{font:inherit;font-weight:700;font-size:.9rem;padding:9px 14px;text-align:center;margin-top:2px}
+body.modal-open{overflow:hidden}
+.gal-sec{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;padding-top:8px;border-top:2px solid var(--ink)}
+.gal-sec:first-child{border-top:0;padding-top:0}
+.gal-sec h3{font-size:1.25rem}
+.gal-price{font-family:var(--display);font-weight:700;font-size:1.2rem;color:var(--accent)}
+.gal-sec small{color:var(--muted);font-size:.85rem;flex-basis:100%}
+small.price{color:var(--accent);font-weight:800;font-size:.85rem}
+.more-pm{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:18px;padding:14px 16px;border:1px dashed var(--accent);border-radius:12px;background:var(--accent-soft)}
+.more-pm p{font-size:.92rem}
+small.perks{color:var(--ok);font-weight:700;font-size:.78rem;line-height:1.3}
+
 .upl{margin-top:4px}
 .upl input[type=file]{display:none}
 .upl .pick{display:inline-block;border:1px dashed var(--accent);color:var(--accent);font-weight:700;padding:11px 18px;border-radius:10px;cursor:pointer;background:var(--accent-soft)}
@@ -221,9 +248,56 @@ footer{border-top:1px solid var(--line);padding-block:24px 36px;color:var(--mute
 .upl-item button{position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:50%;border:0;background:rgba(0,0,0,.65);color:#fff;font-size:15px;line-height:24px;padding:0;cursor:pointer}
 .upl-msg{font-size:.88rem;color:var(--muted);margin-top:8px}
 .upl-msg.bad{color:var(--danger)}
-</style></style>
+
+/* premium invitation cards (P999): cream paper, colored border, gold lines, corner flowers */
+.pm{position:relative;aspect-ratio:2/3;background:var(--pb);color:var(--pi);overflow:hidden;border-radius:.8cqw;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+.pm::before,.pm::after{content:"";position:absolute;pointer-events:none;clip-path:polygon(3cqw 0,calc(100% - 3cqw) 0,100% 3cqw,100% calc(100% - 3cqw),calc(100% - 3cqw) 100%,3cqw 100%,0 calc(100% - 3cqw),0 3cqw)}
+.pm::before{inset:3.6cqw;background:var(--pg)}
+.pm::after{inset:4.1cqw;background:var(--pp)}
+.pm .fl{position:absolute;width:44cqw;height:44cqw;z-index:1;pointer-events:none;background:
+ radial-gradient(circle at 36% 33%,var(--r2) 0 1.5cqw,var(--r1) 1.6cqw 6.2cqw,transparent 6.4cqw),
+ radial-gradient(circle at 62% 18%,var(--cr) 0 1cqw,var(--ra) 1.1cqw 4.4cqw,transparent 4.6cqw),
+ radial-gradient(circle at 17% 60%,var(--cr) 0 1cqw,var(--ra) 1.1cqw 4.6cqw,transparent 4.8cqw),
+ radial-gradient(circle at 86% 9%,var(--lf) 0 .7cqw,transparent .8cqw),
+ radial-gradient(circle at 92% 17%,var(--lf) 0 .6cqw,transparent .7cqw),
+ radial-gradient(circle at 78% 15%,var(--lf) 0 .6cqw,transparent .7cqw)}
+.pm .fl::before,.pm .fl::after{content:"";position:absolute;border-radius:0 100% 0 100%}
+.pm .fl::before{left:44%;top:46%;width:12cqw;height:5cqw;background:var(--r1);transform:rotate(55deg)}
+.pm .fl::after{left:64%;top:5%;width:9cqw;height:3.6cqw;background:var(--lf);transform:rotate(-20deg)}
+.pm .fl.a{left:1cqw;top:1cqw}
+.pm .fl.b{right:1cqw;bottom:1cqw;transform:rotate(180deg)}
+.pm-t{--u:.09765625cqw;position:absolute;left:14.6%;width:71.8%;top:8.7%;bottom:5.4%;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;line-height:1.2;overflow:hidden;font-family:"Cormorant Garamond",Georgia,serif;font-variant-numeric:lining-nums}
+.pm-t p{margin:0}
+.pm .c-eyebrow,.pm .c-tag,.pm .c-side,.pm .c-addr,.pm .c-rec,.pm .c-rsvp,.pm .c-name,.pm .c-mid .m,.pm .c-mid .y{font-weight:700;text-transform:uppercase}
+.pm .c-eyebrow{font-size:calc(var(--u)*24);letter-spacing:.15em}
+.pm .c-invite{font-style:italic;font-weight:600;font-size:calc(var(--u)*35);line-height:1.15;margin-top:calc(var(--u)*14)}
+.pm .s-names,.pm .s-venue,.pm .s-end{display:grid;justify-items:center}
+.pm .s-end{gap:calc(var(--u)*14)}
+.pm .c-name{line-height:.98;letter-spacing:.015em;overflow-wrap:anywhere}
+.pm .c-and{display:flex;align-items:center;justify-content:center;gap:calc(var(--u)*10);margin-block:calc(var(--u)*-4)}
+.pm .c-and span,.pm .c-sub,.pm .c-venue,.pm .c-closing{font-family:"Pinyon Script",cursive;font-weight:400}
+.pm .c-and span{font-size:calc(var(--u)*84);line-height:1.1;color:var(--pg);padding-bottom:calc(var(--u)*6)}
+.pm .swoosh{width:calc(var(--u)*205);height:calc(var(--u)*56);flex:none;color:var(--pg)}
+.pm .swoosh.r{transform:scaleX(-1)}
+.pm .c-sub{font-size:calc(var(--u)*62);color:var(--pg);line-height:1.15}
+.pm .c-tag{font-size:calc(var(--u)*31);letter-spacing:.2em;line-height:1.5}
+.pm .c-tag i{font-style:normal;color:var(--pg);padding-inline:.45em}
+.pm .pb{display:grid;justify-items:center;gap:calc(var(--u)*22);width:100%}
+.pm .orn{width:calc(var(--u)*300);height:calc(var(--u)*24);color:var(--pg)}
+.pm .c-date{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;width:100%}
+.pm .c-side{font-size:calc(var(--u)*31);letter-spacing:.2em}
+.pm .c-mid{display:grid;justify-items:center;gap:calc(var(--u)*4);padding:calc(var(--u)*2) calc(var(--u)*34);border-inline:calc(var(--u)*1.6) solid var(--pg)}
+.pm .c-mid .m,.pm .c-mid .y{font-size:calc(var(--u)*27);letter-spacing:.22em}
+.pm .c-mid .d{font-weight:700;font-size:calc(var(--u)*88);line-height:.95}
+.pm .c-venue{font-size:calc(var(--u)*58);line-height:1.08;text-wrap:balance}
+.pm .c-addr{font-size:calc(var(--u)*28);letter-spacing:.2em;line-height:1.6}
+.pm .c-rec{font-size:calc(var(--u)*30);letter-spacing:.26em}
+.pm .c-rsvp{font-size:calc(var(--u)*27);letter-spacing:.2em;line-height:1.55}
+.pm .c-closing{font-size:calc(var(--u)*39);line-height:1.15;color:var(--pg);margin:calc(var(--u)*20) auto 0;max-width:calc(var(--u)*500);text-wrap:balance}
+</style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="pm-orn" viewBox="0 0 300 24"><path d="M0 12H122M178 12H300" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M150 2L157 12L150 22L143 12Z" fill="currentColor"/><path d="M131 12L138 12M162 12L169 12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></symbol><symbol id="pm-sw" viewBox="0 0 220 60"><path d="M2 38C52 56 126 50 192 24C202 20 212 20 218 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M70 50C108 54 146 46 180 32" fill="none" stroke="currentColor" stroke-width="1" opacity=".7"/></symbol></svg>
 
 <div class="bg" aria-hidden="true"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><i class="blob b4"></i><div id="sparks"></div></div>
 
@@ -240,6 +314,7 @@ footer{border-top:1px solid var(--line);padding-block:24px 36px;color:var(--mute
       <p class="range">Starts at <span>₱699 to ₱1,499</span><small>The final amount depends on your design and add-ons. We confirm it in chat before we start.</small></p>
       <div class="cta-row">
         <a class="cta" href="#order">Start your order</a>
+        <button type="button" class="cta alt" id="openGallery" aria-haspopup="dialog">See sample invitations</button>
         <a class="cta alt" id="dmHero" href="https://m.me/61593107745150" target="_blank" rel="noopener">Message us directly</a>
       </div>
     </div>
@@ -272,6 +347,10 @@ footer{border-top:1px solid var(--line);padding-block:24px 36px;color:var(--mute
         <h2><span>Step 2</span> Choose a design</h2>
         <p class="hint">Designs marked <b>Fits</b> are popular for this occasion. You can pick any design you like, or choose <b>My own design</b> at the end if you already have one.</p>
         <div class="styles" id="styleGrid" role="radiogroup" aria-label="Design"></div>
+        <div class="more-pm">
+          <p><b>Want to see all our designs?</b> Send us a message and we will show you the full collection.</p>
+          <a class="btn" href="https://m.me/61593107745150" target="_blank" rel="noopener">PM us to see all designs</a>
+        </div>
         <div class="sub-opts" id="ownBox" hidden>
           <div class="grid">
             <div class="field full upl">
@@ -292,7 +371,7 @@ footer{border-top:1px solid var(--line);padding-block:24px 36px;color:var(--mute
 
       <section class="step">
         <h2><span>Step 3</span> Format</h2>
-        <p class="hint">Choose the kind of digital invitation you want. Payment range: <b>₱699 to ₱1,499</b>, depending on the design and add-ons. Rush orders have an extra payment.</p>
+        <p class="hint">Choose the kind of digital invitation you want. Payment range: <b>₱699 to ₱1,499</b>, depending on the design and add-ons. Premium (₱999) comes with 3D animation and unlimited requests. Rush is <b>₱1,499</b>.</p>
         <div class="opts" id="fmtGrid" role="radiogroup" aria-label="Format">
           <label class="opt"><input type="radio" name="fmt" value="digital" checked><span><b>Digital invitation</b><small>A JPG or PNG you can share on Messenger, Viber, or in a group chat.</small></span></label>
           <label class="opt"><input type="radio" name="fmt" value="rsvp"><span><b>Digital + RSVP page</b><small>Comes with its own link where guests can reply if they are coming.</small></span></label>
@@ -347,6 +426,24 @@ footer{border-top:1px solid var(--line);padding-block:24px 36px;color:var(--mute
       <div id="asideSlot"></div>    </aside>
   </div>
 
+  <div class="gal" id="gallery" role="dialog" aria-modal="true" aria-labelledby="galTitle" hidden>
+    <div class="gal-box">
+      <div class="gal-head">
+        <div>
+          <h2 id="galTitle">Sample invitations</h2>
+          <p>These are finished sample invitations. Filter by occasion, then tap "Use this design" to choose it for your order.</p>
+        </div>
+        <button type="button" class="gal-x" id="galClose" aria-label="Close samples">&times;</button>
+      </div>
+      <div class="chips gal-occ" id="galOcc" role="radiogroup" aria-label="Sample occasion"></div>
+      <div class="gal-grid" id="galGrid"></div>
+      <div class="more-pm">
+        <p><b>Want to see all our designs?</b> Send us a message and we will show you the full collection.</p>
+        <a class="btn" href="https://m.me/61593107745150" target="_blank" rel="noopener">PM us to see all designs</a>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <span id="footName">Invitation Studio</span> · <a href="https://m.me/61593107745150" target="_blank" rel="noopener">Message us</a> · <a href="https://www.facebook.com/profile.php?id=61593107745150" target="_blank" rel="noopener">Facebook page</a>. The preview is only an example. The final design is made based on what we agree on.
   </footer>
@@ -367,59 +464,72 @@ var CONFIG = {
 var OCC = [
   { id:"birthday", label:"Birthday", intro:"You are invited to the birthday of", sample:"Mika Santos", sampleSub:"Turning 7",
     nameL:"Celebrant's name", nameP:"e.g. Mika Santos", subL:"Age or title", subP:"e.g. Turning 7",
-    extras:[{id:"theme",label:"Theme or motif",ph:"e.g. Unicorn, dinosaur, pastel colors"}], recs:["pastel","tropic","mono","blush"] },
+    extras:[{id:"theme",label:"Theme or motif",ph:"e.g. Unicorn, dinosaur, pastel colors"}], recs:["pastel","mono","pm-wine"] },
   { id:"firstbday", label:"First Birthday", intro:"The first birthday of", sample:"Baby Lucas", sampleSub:"One year old!",
     nameL:"Baby's name", nameP:"e.g. Lucas Miguel", subL:"Extra line", subP:"e.g. One year old!",
-    extras:[{id:"theme",label:"Theme or motif",ph:"e.g. Safari, Cocomelon, hot air balloon"}], recs:["pastel","tropic","sage"] },
+    extras:[{id:"theme",label:"Theme or motif",ph:"e.g. Safari, Cocomelon, hot air balloon"}], recs:["pastel","sage"] },
   { id:"debut", label:"Debut", intro:"The 18th birthday celebration of", sample:"Angelica Rose", sampleSub:"Debut",
     nameL:"Debutante's name", nameP:"e.g. Angelica Rose Reyes", subL:"Extra line", subP:"e.g. Celebrating her 18th birthday",
     extras:[{id:"roses",label:"18 Roses, Candles, or Treasures",ph:"List of names, if you want them on the invitation"},
             {id:"theme",label:"Motif or colors",ph:"e.g. Blush pink and gold"},
-            {id:"dress",label:"Dress code",ph:"e.g. Formal, long gown"}], recs:["gold","royal","blush","sage"] },
+            {id:"dress",label:"Dress code",ph:"e.g. Formal, long gown"}], recs:["sage"] },
   { id:"wedding", label:"Wedding", intro:"Together with their families, you are invited to the wedding of", sample:"Paolo & Bianca", sampleSub:"Getting married",
     nameL:"Groom and bride's names", nameP:"e.g. Paolo & Bianca", subL:"Extra line", subP:"e.g. Getting married",
     extras:[{id:"parents",label:"Parents and sponsors",ph:"Names, if you want them on the invitation"},
             {id:"theme",label:"Motif and dress code",ph:"e.g. Sage green and white, formal"},
-            {id:"gift",label:"Gift note (optional)",ph:"e.g. Cash gifts are appreciated"}], recs:["gold","sage","blush","royal"] },
+            {id:"gift",label:"Gift note (optional)",ph:"e.g. Cash gifts are appreciated"}], recs:["sage","pm-navy"] },
   { id:"christening", label:"Christening", intro:"The christening of", sample:"Baby Elijah", sampleSub:"Receiving the Sacrament",
     nameL:"Name of the child", nameP:"e.g. Elijah James", subL:"Extra line", subP:"e.g. Receiving the Sacrament",
     extras:[{id:"parents",label:"Parents and godparents",ph:"Names, if you want them on the invitation"},
-            {id:"theme",label:"Theme or motif",ph:"e.g. Little clouds, white and light blue"}], recs:["sage","mono","pastel","kraft"] },
+            {id:"theme",label:"Theme or motif",ph:"e.g. Little clouds, white and light blue"}], recs:["sage","mono","pastel","kraft","pm-blue"] },
   { id:"babyshower", label:"Baby Shower", intro:"A baby shower for", sample:"Mommy Karen", sampleSub:"Baby is almost here",
     nameL:"Mom-to-be's name", nameP:"e.g. Karen Dela Cruz", subL:"Extra line", subP:"e.g. Baby is almost here",
-    extras:[{id:"theme",label:"Theme or motif",ph:"e.g. Teddy bears, little stars"}], recs:["pastel","blush","sage"] },
+    extras:[{id:"theme",label:"Theme or motif",ph:"e.g. Teddy bears, little stars"}], recs:["pastel","sage"] },
   { id:"anniversary", label:"Anniversary", intro:"Celebrating the anniversary of", sample:"Ramon & Elena", sampleSub:"25 years together",
     nameL:"Couple's names", nameP:"e.g. Ramon & Elena", subL:"Number of years", subP:"e.g. 25 years together",
-    extras:[{id:"theme",label:"Motif or colors",ph:"e.g. Silver and white"}], recs:["gold","royal","kraft"] },
+    extras:[{id:"theme",label:"Motif or colors",ph:"e.g. Silver and white"}], recs:["kraft"] },
   { id:"graduation", label:"Graduation", intro:"The graduation of", sample:"Jericho Dela Cruz", sampleSub:"Bachelor of Science",
     nameL:"Graduate's name", nameP:"e.g. Jericho Dela Cruz", subL:"Course or level", subP:"e.g. Bachelor of Science",
-    extras:[{id:"theme",label:"Motif or colors",ph:"e.g. Maroon and gold"}], recs:["mono","royal","gold"] },
+    extras:[{id:"theme",label:"Motif or colors",ph:"e.g. Maroon and gold"}], recs:["mono"] },
   { id:"reveal", label:"Gender Reveal", intro:"A gender reveal for", sample:"Mark & Joy", sampleSub:"Boy or girl?",
     nameL:"Couple's names", nameP:"e.g. Mark & Joy", subL:"Extra line", subP:"e.g. Boy or girl?",
-    extras:[{id:"theme",label:"Theme or colors",ph:"e.g. Blue and pink"}], recs:["pastel","tropic"] },
+    extras:[{id:"theme",label:"Theme or colors",ph:"e.g. Blue and pink"}], recs:["pastel"] },
   { id:"reunion", label:"Reunion or Gathering", intro:"A family reunion for", sample:"Reyes Family", sampleSub:"A get-together for everyone",
     nameL:"Family or group name", nameP:"e.g. Reyes Family", subL:"Extra line", subP:"e.g. A get-together for everyone",
-    extras:[{id:"theme",label:"Theme or dress code",ph:"e.g. White shirts for everyone"}], recs:["kraft","tropic","sage"] },
+    extras:[{id:"theme",label:"Theme or dress code",ph:"e.g. White shirts for everyone"}], recs:["kraft","sage"] },
   { id:"other", label:"Other", intro:"You are invited to", sample:"Event name", sampleSub:"Join us",
     nameL:"Title or name", nameP:"e.g. Grand Opening", subL:"Extra line", subP:"",
     extras:[{id:"theme",label:"Theme or colors",ph:""}], recs:["mono"] }
 ];
 
 var STY = [
-  { id:"gold",   name:"Golden Night",     frame:"gold",     bg:"#16213E", ink:"#F3E9D2", acc:"#C9A24B", font:'"Bodoni Moda",serif', fs:"italic", fw:500, ns:10.5, tt:"none" },
-  { id:"blush",  name:"Blooming Rose",    frame:"floral",   bg:"#FCE8EE", ink:"#5A2A3C", acc:"#C95B80", font:'"Pinyon Script",cursive', fs:"normal", fw:400, ns:15, tt:"none" },
   { id:"kraft",  name:"Rustic",           frame:"stitch",   bg:"#D8BC96", ink:"#3A2815", acc:"#7A4A22", font:'"Caveat",cursive', fs:"normal", fw:600, ns:14, tt:"none" },
   { id:"mono",   name:"Modern",           frame:"minimal",  bg:"#FAFAFA", ink:"#121212", acc:"#121212", font:'"DM Sans",sans-serif', fs:"normal", fw:800, ns:9, tt:"uppercase" },
   { id:"sage",   name:"Green Garden",     frame:"leaf",     bg:"#E4ECE0", ink:"#2E4636", acc:"#6B9A78", font:'"Cormorant Garamond",serif', fs:"italic", fw:600, ns:12.5, tt:"none" },
-  { id:"royal",  name:"Royal Burgundy",   frame:"royal",    bg:"#45101F", ink:"#F6E7D4", acc:"#D8A646", font:'"Bodoni Moda",serif', fs:"normal", fw:700, ns:9, tt:"uppercase" },
   { id:"pastel", name:"Happy Pastel",     frame:"confetti", bg:"#FFF1C7", ink:"#353466", acc:"#FF6F91", font:'"Fredoka",sans-serif', fs:"normal", fw:600, ns:12, tt:"none" },
-  { id:"tropic", name:"Tropical",         frame:"tropic",   bg:"#0E5A52", ink:"#FFF6E5", acc:"#FFB347", font:'"DM Sans",sans-serif', fs:"normal", fw:800, ns:9, tt:"uppercase" }
+  { id:"pm-navy", name:"Navy Rose", premium:1, price:"\u20b1999", occ:"wedding", pb:"#10244A", pp:"#FBF5E6", pi:"#10244A", pg:"#A8803A", r1:"#10244A", r2:"#2F4F8C", cr:"#F6EEDC", ra:"#E4D6B4", lf:"#C9A45C",
+    sample:{ intro:"Together with their families, you are invited to the wedding of", name:"Daniel & Hannah", date:"Saturday, February 13, 2027", time:"4:00 PM", venue:"Casa Rosario Garden", addr:"Meycauayan, Bulacan", note:"Reception to follow", rsvp:"January 15, 2027", msg:"Your presence is the best gift of all." } },
+  { id:"pm-wine", name:"Blush Wine", premium:1, price:"\u20b1999", occ:"birthday", pb:"#5A1630", pp:"#FFF6F1", pi:"#4A1226", pg:"#B0795A", r1:"#7A1D3F", r2:"#B04468", cr:"#F9D9D9", ra:"#EDB9BE", lf:"#C98F6E",
+    sample:{ intro:"You are invited to celebrate the birthday of", name:"Sofia Anne", sub:"Turning 30", date:"Saturday, January 23, 2027", time:"7:00 PM", venue:"The Rose Room", addr:"Valenzuela City", note:"Dinner and dancing to follow", rsvp:"January 10, 2027", msg:"Come dressed to celebrate!" } },
+  { id:"pm-blue", name:"Heaven Blue", premium:1, price:"\u20b1999", occ:"christening", pb:"#3F5F82", pp:"#FAF8F0", pi:"#27405E", pg:"#A8803A", r1:"#4D77A3", r2:"#8FB2D4", cr:"#FFFFFF", ra:"#DDE6EE", lf:"#C9A45C",
+    sample:{ intro:"With grateful hearts, we invite you to the christening of", name:"Elijah James", sub:"Child of God", date:"Sunday, March 7, 2027", time:"10:00 AM", venue:"St. Joseph Parish Church", addr:"Marilao, Bulacan", note:"Lunch to follow at the family home", rsvp:"February 20, 2027", msg:"Thank you for sharing this blessed day with us." } },
 ];
+
+
+/* Simple designs have a fixed price. Detailed designs keep the shop's price range. */
+var SIMPLE_IDS = ["mono","kraft","pastel","sage"];
+var SIMPLE_PRICE = "\u20b1699", DETAILED_PRICE = "\u20b1699 to \u20b11,499";
+function isSimple(id){ return SIMPLE_IDS.indexOf(id) >= 0; }
+function priceOf(id){ var p = sty(id); return p.price ? p.price : (isSimple(id) ? SIMPLE_PRICE : DETAILED_PRICE); }
+var PREMIUM_PERKS = ["3D animation", "Unlimited requests"];
+var PREMIUM_PRICE = "\u20b1999";
+function isCustom(v){ return v === "custom" || v === "custom-premium"; }
+function customPrice(v){ return v === "custom-premium" ? PREMIUM_PRICE : SIMPLE_PRICE; }
 
 var ADDONS = [
   { key:"savedate", label:"Save-the-date", sub:"A short early notice, separate from the invitation" },
   { key:"retouch",  label:"Photo retouch", sub:"We touch up and clean the photo you send" },
-  { key:"rush",     label:"Rush", sub:"Ready within 24 to 48 hours. Rush orders have an extra payment." }
+  { key:"rush",     label:"Rush (\u20b11,499)", sub:"Ready within 4 to 5 days. Rush price: \u20b11,499." }
 ];
 
 var MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -444,8 +554,52 @@ function fmtTime(v){
 }
 
 /* ----- invitation renderer ----- */
+var PMW = {
+  wedding:{ eb:"Together with our families", tag:["Two hearts","One journey","A lifetime together"] },
+  birthday:{ eb:"Join us as we celebrate", tag:["Good food","Good company","Great memories"] },
+  christening:{ eb:"With grateful hearts", tag:["Faith","Family","A new beginning"] },
+  other:{ eb:"Please join us", tag:["Good food","Good company","Great memories"] }
+};
+function renderPremium(host, o, s){
+  var el = host.firstChild;
+  if(!el || el.className !== "pm"){
+    host.innerHTML = '<div class="pm"><span class="fl a"></span><span class="fl b"></span><div class="pm-t">'
+    + '<div class="s-top"><p class="c-eyebrow" data-k="eb"></p><p class="c-invite" data-k="intro"></p></div>'
+    + '<div class="s-names"><p class="c-name" data-k="n1"></p><div class="c-and" data-k="and"><svg class="swoosh"><use href="#pm-sw"/></svg><span>and</span><svg class="swoosh r"><use href="#pm-sw"/></svg></div><p class="c-name" data-k="n2"></p><p class="c-sub" data-k="sub"></p></div>'
+    + '<p class="c-tag"><span data-k="ta"></span><i>&bull;</i><span data-k="tb"></span><br><span data-k="tc"></span></p>'
+    + '<div class="pb" data-k="gd"><svg class="orn"><use href="#pm-orn"/></svg><div class="c-date"><span class="c-side" data-k="wd"></span><div class="c-mid"><span class="m" data-k="mo"></span><span class="d" data-k="dy"></span><span class="y" data-k="yr"></span></div><span class="c-side" data-k="tm"></span></div></div>'
+    + '<div class="pb" data-k="gv"><svg class="orn"><use href="#pm-orn"/></svg><div class="s-venue"><p class="c-venue" data-k="ve"></p><p class="c-addr" data-k="ad"></p></div></div>'
+    + '<div class="s-end"><p class="c-rec" data-k="rc"></p><p class="c-rsvp" data-k="rs"></p><p class="c-closing" data-k="cl"></p><svg class="orn"><use href="#pm-orn"/></svg></div>'
+    + '</div></div>';
+    el = host.firstChild;
+  }
+  ["pb","pp","pi","pg","r1","r2","cr","ra","lf"].forEach(function(k){ el.style.setProperty("--" + k, s[k]); });
+  function t(k, v, keep){
+    var e = el.querySelector('[data-k="' + k + '"]'); e.textContent = v || "";
+    if(keep){ e.hidden = false; e.style.visibility = v ? "visible" : "hidden"; } else { e.hidden = !v; }
+    return e;
+  }
+  var w = PMW[o.occ] || PMW.other;
+  t("eb", o.eb || w.eb); t("intro", o.intro);
+  var parts = (o.name || "").trim().split(/\s*&\s*|\s+and\s+/i), n1 = parts.shift() || "", n2 = parts.join(" & ");
+  function sz(n){ return n.length > 16 ? 66 : n.length > 11 ? 84 : 100; }
+  t("n1", n1).style.fontSize = "calc(var(--u)*" + sz(n1) + ")";
+  t("n2", n2).style.fontSize = "calc(var(--u)*" + sz(n2) + ")";
+  el.querySelector('[data-k="and"]').hidden = !n2;
+  t("sub", o.sub);
+  t("ta", w.tag[0]); t("tb", w.tag[1]); t("tc", w.tag[2]);
+  var m = /^(\w+),\s*(\w+)\s+(\d+),\s*(\d+)$/.exec(o.date || "");
+  t("wd", m ? m[1] : "", true); t("mo", m ? m[2] : (o.date || "")); t("dy", m ? m[3] : ""); t("yr", m ? m[4] : "");
+  t("tm", o.time ? "At " + o.time : "", true);
+  el.querySelector('[data-k="gd"]').hidden = !(o.date || o.time);
+  t("ve", o.venue); t("ad", o.addr);
+  el.querySelector('[data-k="gv"]').hidden = !o.venue;
+  t("rc", o.note); t("rs", o.rsvp ? "Kindly RSVP by " + o.rsvp : ""); t("cl", o.msg);
+}
 function renderInv(host, o){
   var s = sty(o.style);
+  if(s.premium){ renderPremium(host, o, s); return; }
+  if(host.firstChild && host.firstChild.className !== "inv") host.innerHTML = "";
   if(!host.firstChild){
     host.innerHTML = '<div class="inv"><p class="i-intro"></p><div class="i-name"></div><p class="i-sub"></p><span class="i-rule"></span><p class="i-date"></p><p class="i-time"></p><p class="i-venue"></p><p class="i-msg"></p></div>';
   }
@@ -480,17 +634,31 @@ function buildStyles(){
     var host = document.createElement("span"); host.className = "invw"; host.style.display = "block";
     var b = document.createElement("b"); b.textContent = s.name;
     var rec = document.createElement("em"); rec.className = "rec"; rec.textContent = "Fits"; rec.hidden = true;
-    box.appendChild(host); box.appendChild(b); box.appendChild(rec);
+    var pr = document.createElement("small"); pr.className = "price"; pr.textContent = priceOf(s.id);
+    box.appendChild(host); box.appendChild(b); box.appendChild(pr);
+    if(s.premium){
+      var pk = document.createElement("small"); pk.className = "perks"; pk.textContent = "Perks: " + PREMIUM_PERKS.join(" + ");
+      box.appendChild(pk);
+    }
+    box.appendChild(rec);
     l.appendChild(inp); l.appendChild(box); g.appendChild(l);
   });
-  var c = document.createElement("label"); c.className = "scard"; c.setAttribute("data-id", "custom");
-  var ci = document.createElement("input"); ci.type = "radio"; ci.name = "sty"; ci.value = "custom";
-  var cb = document.createElement("span"); cb.className = "sc-in";
-  var th = document.createElement("span"); th.className = "own-thumb"; th.textContent = "Send us your own design";
-  var cl = document.createElement("b"); cl.textContent = "My own design";
-  var cr = document.createElement("em"); cr.className = "rec"; cr.hidden = true;
-  cb.appendChild(th); cb.appendChild(cl); cb.appendChild(cr);
-  c.appendChild(ci); c.appendChild(cb); g.appendChild(c);
+  [{ id:"custom", price:SIMPLE_PRICE, perks:false }, { id:"custom-premium", price:PREMIUM_PRICE, perks:true }].forEach(function(cfg){
+    var c = document.createElement("label"); c.className = "scard"; c.setAttribute("data-id", cfg.id);
+    var ci = document.createElement("input"); ci.type = "radio"; ci.name = "sty"; ci.value = cfg.id;
+    var cb = document.createElement("span"); cb.className = "sc-in";
+    var th = document.createElement("span"); th.className = "own-thumb"; th.textContent = "Send us your own design";
+    var cl = document.createElement("b"); cl.textContent = "My own design";
+    var cp = document.createElement("small"); cp.className = "price"; cp.textContent = cfg.price;
+    var cr = document.createElement("em"); cr.className = "rec"; cr.hidden = true;
+    cb.appendChild(th); cb.appendChild(cl); cb.appendChild(cp);
+    if(cfg.perks){
+      var pk = document.createElement("small"); pk.className = "perks"; pk.textContent = "Perks: " + PREMIUM_PERKS.join(" + ");
+      cb.appendChild(pk);
+    }
+    cb.appendChild(cr);
+    c.appendChild(ci); c.appendChild(cb); g.appendChild(c);
+  });
 }
 function buildAddons(){
   var g = $("addons");
@@ -542,14 +710,14 @@ function update(){
   var intro = o.id === "other" && $("kind").value.trim() ? "You are invited to " + $("kind").value.trim() : o.intro;
   /* thumbnails use the occasion's sample wording */
   document.querySelectorAll(".scard").forEach(function(l){
-    if(l.getAttribute("data-id") === "custom") return;
-    renderInv(l.querySelector(".invw"), { style:l.getAttribute("data-id"), intro:o.intro, name:o.sample, sub:o.sampleSub });
+    if(l.getAttribute("data-id").indexOf("custom") === 0) return;
+    renderInv(l.querySelector(".invw"), { style:l.getAttribute("data-id"), occ:o.id, intro:o.intro, name:o.sample, sub:o.sampleSub });
   });
-  var own = styleId === "custom";
+  var own = isCustom(styleId);
   $("pvCard").hidden = own; $("pvOwn").hidden = !own; $("ownBox").hidden = !own;
   /* live preview uses the person's own text, with the sample as a fallback */
   if(!own) renderInv($("pvCard"), {
-    style: styleId, intro: intro,
+    style: styleId, occ: o.id, intro: intro,
     name: $("fname").value.trim() || o.sample,
     sub: $("fsub").value.trim() || (o.subP ? o.sampleSub : ""),
     date: fmtDate($("fdate").value), time: fmtTime($("ftime").value),
@@ -580,14 +748,15 @@ function buildSummary(code){
   var occLabel = o.id === "other" && $("kind").value.trim() ? "Other: " + $("kind").value.trim() : o.label;
   L.push("ORDER " + code);
   L.push("Occasion: " + occLabel);
-  if(radio("sty") === "custom"){
-    L.push("Design: Customer's own design");
+  if(isCustom(radio("sty"))){
+    L.push("Design: Customer's own design (" + customPrice(radio("sty")) + (radio("sty") === "custom-premium" ? ", Premium, Perks: " + PREMIUM_PERKS.join(", ") : "") + ")");
     if($("odlink").value.trim()) L.push("Design link: " + $("odlink").value.trim());
     else if(!OD_IMGS.length) L.push("Design file: customer will send it in chat");
     if(OD_IMGS.length) L.push("Design pictures: " + OD_IMGS.length + " uploaded with this order (check the Drive folder)");
     if($("odnotes").value.trim()) L.push("About the design: " + $("odnotes").value.trim());
   } else {
-    L.push("Design: " + s.name);
+    L.push("Design: " + s.name + " (" + (s.premium ? "Premium, " : isSimple(s.id) ? "Simple, " : "Detailed, ") + priceOf(s.id) + ")");
+    if(s.premium) L.push("Perks: " + PREMIUM_PERKS.join(", "));
   }
   L.push("Format: " + FMT_LABEL[f]);
   if(c.adds.length) L.push("Add-ons: " + c.adds.join(", "));
@@ -613,7 +782,7 @@ function buildSummary(code){
 }
 
 function collectOrder(code){
-  var o = occ(), own = radio("sty") === "custom", extras = [];
+  var o = occ(), own = isCustom(radio("sty")), extras = [];
   document.querySelectorAll("#extras input").forEach(function(i){
     if(i.value.trim()) extras.push(i.getAttribute("data-label") + ": " + i.value.trim());
   });
@@ -621,7 +790,7 @@ function collectOrder(code){
   return {
     code: code,
     occasion: o.id === "other" && $("kind").value.trim() ? "Other: " + $("kind").value.trim() : o.label,
-    design: own ? "Customer's own design" : sty(radio("sty")).name,
+    design: own ? "Customer's own design (" + customPrice(radio("sty")) + ")" : sty(radio("sty")).name,
     designLink: own ? $("odlink").value.trim() : "",
     designNotes: own ? $("odnotes").value.trim() : "",
     designImages: own ? OD_IMGS.map(function(m){ return { name: m.name, data: m.data }; }) : [],
@@ -793,7 +962,7 @@ $("draftDays").textContent = CONFIG.draftDays;
 
 /* hero samples */
 renderInv($("h1"), { style:"pastel", intro:OCC[0].intro, name:"Mika", sub:"Turning 7", date:"Saturday, March 14, 2027", venue:"Garden Pavilion" });
-renderInv($("h2"), { style:"gold", intro:OCC[2].intro, name:"Angelica Rose", sub:"Debut", date:"Friday, April 9, 2027", venue:"Grand Ballroom" });
+renderInv($("h2"), { style:"kraft", intro:OCC[2].intro, name:"Angelica Rose", sub:"Debut", date:"Friday, April 9, 2027", venue:"Grand Ballroom" });
 renderInv($("h3"), { style:"sage", intro:"The wedding of", name:"Paolo & Bianca", sub:"Getting married", date:"Sunday, May 2, 2027", venue:"Bulacan Garden" });
 
 /* floating sparkles (skipped when the viewer prefers reduced motion) */
@@ -807,6 +976,150 @@ renderInv($("h3"), { style:"sage", intro:"The wedding of", name:"Paolo & Bianca"
     el.style.cssText = "left:" + (Math.random() * 100) + "%;width:" + size + "px;height:" + size + "px;animation-duration:" + (18 + Math.random() * 16) + "s;animation-delay:-" + (Math.random() * 30) + "s";
     box.appendChild(el);
   }
+})();
+
+/* ----- sample gallery ----- */
+(function(){
+  var gal = $("gallery"), grid = $("galGrid"), occBox = $("galOcc"), lastFocus = null, curOcc = "all";
+  /* full sample details per occasion, so each sample looks like a finished invitation */
+  var SAMPLE = {
+    birthday:    { date:"Saturday, March 14, 2027",  time:"3:00 PM",  venue:"Garden Pavilion, Meycauayan", msg:"Come celebrate with cake, games, and lots of fun!" },
+    firstbday:   { date:"Sunday, April 11, 2027",     time:"2:00 PM",  venue:"Sunshine Function Hall",      msg:"Join us for Lucas' very first birthday party." },
+    debut:       { date:"Friday, April 9, 2027",      time:"6:00 PM",  venue:"Grand Ballroom, Bulacan",     msg:"Formal attire. Your presence will make the night special." },
+    wedding:     { date:"Sunday, May 2, 2027",        time:"3:30 PM",  venue:"Bulacan Garden Chapel",       msg:"Together with our families, we invite you to witness our vows." },
+    christening: { date:"Saturday, June 5, 2027",     time:"10:00 AM", venue:"St. Mary Parish Church",      msg:"Please join us for the blessing, followed by a small lunch." },
+    babyshower:  { date:"Saturday, July 10, 2027",    time:"2:00 PM",  venue:"Karen's Residence",           msg:"Shower the little one with love and good wishes." },
+    anniversary: { date:"Saturday, August 7, 2027",   time:"6:30 PM",  venue:"Rosewood Restaurant",         msg:"Celebrate a love that has lasted a lifetime with us." },
+    graduation:  { date:"Saturday, March 27, 2027",   time:"5:00 PM",  venue:"Dela Cruz Residence",         msg:"Celebrate the hard work and the bright road ahead." },
+    reveal:      { date:"Sunday, September 5, 2027",  time:"4:00 PM",  venue:"Joy's Backyard",              msg:"Pink or blue? Come and find out with us!" },
+    reunion:     { date:"Saturday, December 18, 2027",time:"11:00 AM", venue:"Reyes Family Farm",           msg:"Food, games, and stories. Bring the whole family." },
+    other:       { date:"Saturday, November 6, 2027", time:"9:00 AM",  venue:"Main Street, Meycauayan",     msg:"We would love to see you there." }
+  };
+
+  var all = document.createElement("label"); all.className = "chip";
+  var allIn = document.createElement("input"); allIn.type = "radio"; allIn.name = "galocc"; allIn.value = "all"; allIn.checked = true;
+  var allSp = document.createElement("span"); allSp.textContent = "All samples";
+  all.appendChild(allIn); all.appendChild(allSp); occBox.appendChild(all);
+  allIn.addEventListener("change", function(){ curOcc = "all"; renderGallery(); });
+
+  OCC.forEach(function(o){
+    var l = document.createElement("label"); l.className = "chip";
+    var inp = document.createElement("input"); inp.type = "radio"; inp.name = "galocc"; inp.value = o.id;
+    var sp = document.createElement("span"); sp.textContent = o.label;
+    l.appendChild(inp); l.appendChild(sp); occBox.appendChild(l);
+    inp.addEventListener("change", function(){ curOcc = o.id; renderGallery(); });
+  });
+
+  function renderGallery(){
+    var items = [];
+    if(curOcc === "all"){
+      OCC.forEach(function(o){ o.recs.filter(function(sid){ return !sty(sid).premium; }).slice(0, 2).forEach(function(sid){ items.push({ o:o, s:sty(sid) }); }); });
+      STY.forEach(function(s){ if(s.premium) items.push({ o:OCC.find(function(x){ return x.id === s.occ; }), s:s }); });
+    } else {
+      var o1 = OCC.find(function(x){ return x.id === curOcc; }) || OCC[0];
+      var order = o1.recs.concat(STY.map(function(s){ return s.id; }).filter(function(id){ return o1.recs.indexOf(id) < 0; })).filter(function(id){ var x = sty(id); return !x.premium || x.occ === o1.id; });
+      order.forEach(function(sid){ items.push({ o:o1, s:sty(sid) }); });
+    }
+    grid.innerHTML = "";
+    [{ k:"p", price:"\u20b1999", head:"Premium designs", note:"Full invitation cards with flowers and gold lines. Perks: 3D animation + unlimited requests. Fixed price. You can also send your own design at this price." },
+     { k:"s", price:SIMPLE_PRICE, head:"Simple designs", note:"Clean and easy. Fixed price. You can also send your own design at this price." },
+     { k:"d", price:DETAILED_PRICE, head:"Detailed designs", note:"With decorative frames. Price is confirmed in chat" }].forEach(function(g){
+      var part = items.filter(function(it){ return (it.s.premium ? "p" : isSimple(it.s.id) ? "s" : "d") === g.k; });
+      if(!part.length) return;
+      var sec = document.createElement("div"); sec.className = "gal-sec";
+      var h = document.createElement("h3"); h.textContent = g.head;
+      var pr = document.createElement("span"); pr.className = "gal-price"; pr.textContent = g.price;
+      var nt = document.createElement("small"); nt.textContent = g.note;
+      sec.appendChild(h); sec.appendChild(pr); sec.appendChild(nt); grid.appendChild(sec);
+      part.forEach(function(it){
+        var o = it.o, s = it.s, d = s.premium ? s.sample : (SAMPLE[o.id] || SAMPLE.other);
+        var card = document.createElement("div"); card.className = "gal-card";
+        var host = document.createElement("div"); host.className = "invw";
+        var b = document.createElement("b");
+        b.textContent = (curOcc === "all" ? o.label + " \u00b7 " : "") + s.name + (curOcc !== "all" && o.recs.indexOf(s.id) >= 0 ? " \u00b7 Fits" : "");
+        var p = document.createElement("small"); p.className = "price"; p.textContent = priceOf(s.id);
+        var btn = document.createElement("button"); btn.type = "button"; btn.className = "btn"; btn.textContent = "Use this design";
+        btn.addEventListener("click", function(){ choose(s.id, o.id); });
+        card.appendChild(host); card.appendChild(b); card.appendChild(p);
+        if(s.premium){ var pkx = document.createElement("small"); pkx.className = "perks"; pkx.textContent = "Perks: " + PREMIUM_PERKS.join(" + "); card.appendChild(pkx); }
+        card.appendChild(btn); grid.appendChild(card);
+        renderInv(host, s.premium ? Object.assign({ style:s.id, occ:o.id }, d) : { style:s.id, occ:o.id, intro:o.intro, name:o.sample, sub:o.sampleSub, date:d.date, time:d.time, venue:d.venue, msg:d.msg });
+      });
+    });
+    /* own design section */
+    var cs = document.createElement("div"); cs.className = "gal-sec";
+    var ch = document.createElement("h3"); ch.textContent = "Your own design";
+    var cpr = document.createElement("span"); cpr.className = "gal-price"; cpr.textContent = SIMPLE_PRICE + " or " + PREMIUM_PRICE;
+    var cn = document.createElement("small"); cn.textContent = "Already have a design? Send it to us and we will use it. " + SIMPLE_PRICE + " for the simple version, or " + PREMIUM_PRICE + " with " + PREMIUM_PERKS.join(" + ") + ".";
+    cs.appendChild(ch); cs.appendChild(cpr); cs.appendChild(cn); grid.appendChild(cs);
+    [{ id:"custom", price:SIMPLE_PRICE, name:"My own design" }, { id:"custom-premium", price:PREMIUM_PRICE, name:"My own design", perks:true }].forEach(function(c){
+      var card = document.createElement("div"); card.className = "gal-card";
+      var th = document.createElement("div"); th.className = "own-thumb"; th.textContent = "Send us your own design";
+      var b = document.createElement("b"); b.textContent = c.name;
+      var p = document.createElement("small"); p.className = "price"; p.textContent = c.price;
+      card.appendChild(th); card.appendChild(b); card.appendChild(p);
+      var pk = document.createElement("small"); pk.className = "perks"; pk.textContent = "Perks: " + PREMIUM_PERKS.join(" + ");
+      if(!c.perks) pk.style.visibility = "hidden";
+      card.appendChild(pk);
+      var btn = document.createElement("button"); btn.type = "button"; btn.className = "btn"; btn.textContent = "Use custom design";
+      btn.addEventListener("click", function(){ chooseCustom(c.id); });
+      card.appendChild(btn); grid.appendChild(card);
+    });
+    /* rush info */
+    var rs = document.createElement("div"); rs.className = "gal-sec";
+    var rh = document.createElement("h3"); rh.textContent = "Need it fast?";
+    var rp = document.createElement("span"); rp.className = "gal-price"; rp.textContent = "Rush \u20b11,499";
+    var rn = document.createElement("small"); rn.textContent = "Ready within 4 to 5 days. You can add Rush as an add-on in Step 3 of your order.";
+    rs.appendChild(rh); rs.appendChild(rp); rs.appendChild(rn); grid.appendChild(rs);
+  }
+
+  function chooseCustom(styleId){
+    var r = document.querySelector('input[name="sty"][value="' + styleId + '"]');
+    if(r){ r.checked = true; onOccasion.touchedStyle = true; }
+    update();
+    closeGal();
+    $("ownBox").scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  function choose(styleId, occId){
+    var o = document.querySelector('input[name="occ"][value="' + occId + '"]');
+    if(o && !o.checked){ o.checked = true; onOccasion.touchedStyle = true; onOccasion(); }
+    var r = document.querySelector('input[name="sty"][value="' + styleId + '"]');
+    if(r){ r.checked = true; onOccasion.touchedStyle = true; }
+    update();
+    closeGal();
+    $("order").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function openGal(){
+    lastFocus = document.activeElement;
+    curOcc = "all";
+    allIn.checked = true;
+    renderGallery();
+    gal.scrollTop = 0;
+    gal.hidden = false; document.body.classList.add("modal-open");
+    $("galClose").focus();
+  }
+  function closeGal(){
+    gal.hidden = true; document.body.classList.remove("modal-open");
+    if(lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  $("openGallery").addEventListener("click", openGal);
+  $("galClose").addEventListener("click", closeGal);
+  gal.addEventListener("click", function(e){ if(e.target === gal) closeGal(); });
+  document.addEventListener("keydown", function(e){ if(e.key === "Escape" && !gal.hidden) closeGal(); });
+})();
+
+/* On computers, open the Facebook chat directly so the Facebook login is used (m.me sends people to messenger.com, which asks for a separate login). Phones keep m.me and open the Messenger app. */
+(function(){
+  var isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+  if(isMobile) return;
+  var pageId = (CONFIG.messengerUrl.match(/m\.me\/([^/?#]+)/) || [])[1];
+  if(!pageId) return;
+  var desktopUrl = "https://www.facebook.com/messages/t/" + pageId;
+  CONFIG.messengerUrl = desktopUrl;
+  document.querySelectorAll('a[href^="https://m.me/"]').forEach(function(a){ a.href = desktopUrl; });
 })();
 
 onOccasion();
